@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en-US">
   <head>
     <title>Web Chat: Full-featured bundle</title>
@@ -7,7 +7,11 @@
       This CDN points to the latest official release of Web Chat. If you need to test against Web Chat's latest bits, please refer to using Web Chat's latest bits:
       https://github.com/microsoft/BotFramework-WebChat#how-to-test-with-web-chats-latest-bits
     -->
-    <script crossorigin="anonymous" src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
+    <script
+      crossorigin="anonymous"
+      src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"
+    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.3/html2canvas.min.js"></script>
     <style>
       html,
       body {
@@ -18,31 +22,71 @@
         margin: 0;
       }
 
+      .formClass {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-color: red;
+      }
+
+      .myButton {
+        background-color: green;
+        color: white;
+      }
+
       #webchat {
-        height: 100%;
-        width: 100%;
+        height: 50%;
+        width: 50%;
       }
     </style>
   </head>
   <body>
+    <form id="myForm" class="formClass">
+      <p>Click on one of the text labels to toggle the related radio button:</p>
+      <label>
+        Name:
+        <input type="text" name="name" />
+      </label>
+      <br />
+      <label>
+        Password:
+        <input type="text" name="password" />
+      </label>
+      <br />
+      <button type="submit" class="myButton">Submit</button>
+    </form>
     <div id="webchat" role="main"></div>
     <script>
       (async function () {
-        const res = await fetch(
-          '/api/directline/token',
-          { method: 'POST' }
-        );
+        const res = await fetch("/api/directline/token", { method: "POST" });
         const { token } = await res.json();
+
+        const htmlContent = document.getElementById("myForm");
+
+        const form = document.getElementById("myForm");
+        html2canvas(form).then(function (canvas) {
+          // Your code here to handle the screenshot as a canvas object
+          // For example, you can convert it to a data URL and display it as an image:
+          const dataUrl = canvas.toDataURL("image/png");
+          const img = document.createElement("img");
+          img.src = dataUrl;
+          document.body.appendChild(img);
+        });
 
         window.WebChat.renderWebChat(
           {
-            directLine: window.WebChat.createDirectLine({ token })
+            directLine: window.WebChat.createDirectLine({
+              /*token */
+              secret:
+                "85VOqDBuCxp5LxIQmWfRTqcxlP5yGdHcse8DWmzjGEGyRTTEpFlYJQQJ99BAACL93NaAArohAAABAZBS1FKX.CFPtwu3HIQEE9Rqqa0rcnoASOmHMONZ1xrnlCPCOXJJnmdYOQF3bJQQJ99BAACL93NaAArohAAABAZBS11qG",
+            }),
           },
-          document.getElementById('webchat')
+          document.getElementById("webchat")
         );
 
-        document.querySelector('#webchat > *').focus();
-      })().catch(err => console.error(err));
+        document.querySelector("#webchat > *").focus();
+      })().catch((err) => console.error(err));
     </script>
   </body>
 </html>

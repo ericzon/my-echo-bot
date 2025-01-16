@@ -128,6 +128,6 @@ app.mount("/", StaticFiles(directory="public"), name="public")
 
 if __name__ == "__main__":
     try:
-        uvicorn.run("main:app", host="localhost", port=os.environ.get("PORT"), reload=True, log_level="debug")
+        uvicorn.run("main:app", host="localhost", port=int(os.environ.get("PORT")), reload=True, log_level="debug")
     except Exception as error:
         raise error
