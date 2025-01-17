@@ -15,7 +15,6 @@ class EchoBot(ActivityHandler):
     async def on_message_activity(self, turn_context: TurnContext):
         print(f"on_message_activity called: {turn_context.activity.text}")
         if "view" in turn_context.activity.text.lower():
-            # TODO: Send event from back to front requesting an screenshot
             event_activity = Activity(
                 type=ActivityTypes.event,
                 name="makeScreenshot",
