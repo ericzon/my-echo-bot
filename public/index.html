@@ -77,36 +77,49 @@
       (async function () {
         "use strict";
 
-        const {
-          hooks: { usePostActivity },
-          ReactWebChat,
-        } = window.WebChat;
+        const { createStore, ReactWebChat } = window.WebChat;
 
-        const { useCallback } = window.React;
+        const { useMemo } = window.React;
 
-        const activityMiddleware = () => (next) => (activity) => {
-          const messageText = activity.activity.text;
+        const store = createStore({}, ({ dispatch }) => (next) => (action) => {
           if (
-            activity.activity.type === "message" &&
-            activity.activity.text &&
-            messageText.toUpperCase().includes("CLAIM")
+            action.payload &&
+            action.payload.activity &&
+            action.payload.activity.type === "event" &&
+            action.payload.activity.name === "makeScreenshot" &&
+            action.type === "DIRECT_LINE/INCOMING_ACTIVITY"
           ) {
-            console.log("🚀 ~ Opening a claim");
+            console.log(
+              "🚀 ~ action.payload.activity:",
+              action.payload.activity
+            );
+            dispatch({
+              type: "WEB_CHAT/SEND_EVENT",
+              payload: {
+                name: "screenshotRequested",
+                type: "event",
+                value: { key: "I need a screenshot" },
+              },
+            });
+          } else {
+            return next(action);
           }
+        });
 
-          return next(activity);
+        const App = () => {
+          const directLine = useMemo(
+            () =>
+              window.WebChat.createDirectLine({
+                secret:
+                  "85VOqDBuCxp5LxIQmWfRTqcxlP5yGdHcse8DWmzjGEGyRTTEpFlYJQQJ99BAACL93NaAArohAAABAZBS1FKX.CFPtwu3HIQEE9Rqqa0rcnoASOmHMONZ1xrnlCPCOXJJnmdYOQF3bJQQJ99BAACL93NaAArohAAABAZBS11qG",
+              }),
+            []
+          );
+
+          return <ReactWebChat directLine={directLine} store={store} />;
         };
 
-        window.ReactDOM.render(
-          <ReactWebChat
-            activityMiddleware={activityMiddleware}
-            directLine={window.WebChat.createDirectLine({
-              secret:
-                "85VOqDBuCxp5LxIQmWfRTqcxlP5yGdHcse8DWmzjGEGyRTTEpFlYJQQJ99BAACL93NaAArohAAABAZBS1FKX.CFPtwu3HIQEE9Rqqa0rcnoASOmHMONZ1xrnlCPCOXJJnmdYOQF3bJQQJ99BAACL93NaAArohAAABAZBS11qG",
-            })}
-          />,
-          document.getElementById("webchat")
-        );
+        window.ReactDOM.render(<App />, document.getElementById("webchat"));
 
         document.querySelector("#webchat > *").focus();
       })().catch((err) => console.error(err));
