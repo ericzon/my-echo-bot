@@ -14,6 +14,7 @@ class EchoBot(ActivityHandler):
 
     async def on_message_activity(self, turn_context: TurnContext):
         print(f"on_message_activity called: {turn_context.activity.text}")
+        print(f"on_message_activity called: {turn_context.activity.type}")
         if "view" in turn_context.activity.text.lower():
             event_activity = Activity(
                 type=ActivityTypes.event,
