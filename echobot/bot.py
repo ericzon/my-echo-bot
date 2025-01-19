@@ -26,3 +26,7 @@ class EchoBot(ActivityHandler):
         return await turn_context.send_activity(
             MessageFactory.text(f"Echo: {turn_context.activity.text}")
         )
+    
+    async def on_event_activity(self, turn_context):
+        print(f"on_message_event called: {turn_context.activity.name}")
+        return await super().on_event_activity(turn_context)
