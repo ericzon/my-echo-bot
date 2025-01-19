@@ -7,14 +7,12 @@ class EchoBot(ActivityHandler):
     async def on_members_added_activity(
         self, members_added: [ChannelAccount], turn_context: TurnContext
     ):
-        print("on_members_added_activity called")
         for member in members_added:
             if member.id != turn_context.activity.recipient.id:
                 await turn_context.send_activity("Hello and welcome!")
 
     async def on_message_activity(self, turn_context: TurnContext):
         print(f"on_message_activity called: {turn_context.activity.text}")
-        print(f"on_message_activity called: {turn_context.activity.type}")
         if "view" in turn_context.activity.text.lower():
             event_activity = Activity(
                 type=ActivityTypes.event,
