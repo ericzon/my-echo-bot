@@ -31,9 +31,9 @@ class EchoBot(ActivityHandler):
         imgGenerated = turn_context.activity.value.get("img", None)
         print(f"on_message_event called img received: {imgGenerated}")
 
-        # TODO: Call the corresponding API to get the description of the image. First approach using gpt-4o-mini,
+        # TODO: Call the corresponding API to get the description of the image. Below the code comented would be a first approach using gpt-4o-mini,
         # but we need the api_key client to be able to do the call, we can use a OPENAI_API_KEY environment variable. 
-        client = OpenAI()
+        """ client = OpenAI()
 
         response = client.chat.completions.create(
             model="gpt-4o-mini",
@@ -53,5 +53,5 @@ class EchoBot(ActivityHandler):
             ],
             max_tokens=300,
         )
-        print(response.choices[0])
+        print(response.choices[0]) """
         return await super().on_event_activity(turn_context)
