@@ -14,6 +14,7 @@ botbuilder-core = "^4.16.2"
 botframework-connector = "^4.16.2"
 httpx = "^0.28.1"
 python-dotenv = "^1.0.1"
+openai = "^1.59.9"
 
 
 [build-system]
