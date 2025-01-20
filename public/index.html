@@ -21,6 +21,7 @@
       crossorigin="anonymous"
       src="https://unpkg.com/react-redux@7.1.0/dist/react-redux.min.js"
     ></script>
+    <script src="/path/to/html2canvas.min.js"></script>
     <!--
       This CDN points to the latest official release of Web Chat. If you need to test against Web Chat's latest bits, please refer to using Web Chat's latest bits:
       https://github.com/microsoft/BotFramework-WebChat#how-to-test-with-web-chats-latest-bits
@@ -40,8 +41,8 @@
       }
 
       #webchat {
-        height: 100%;
-        width: 100%;
+        height: 50%;
+        width: 50%;
       }
 
       .botActivityDecorator {
@@ -68,9 +69,37 @@
         margin-bottom: 2px;
         padding: 2px 5px 5px;
       }
+
+      .formClass {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-color: red;
+      }
+
+      .myButton {
+        background-color: green;
+        color: white;
+      }
     </style>
   </head>
   <body>
+    <form id="myForm" class="formClass">
+      <p>Click on one of the text labels to toggle the related radio button:</p>
+      <label>
+        Name:
+        <input type="text" name="name" />
+      </label>
+      <br />
+      <label>
+        Password:
+        <input type="text" name="password" />
+      </label>
+      <br />
+      <button type="submit" class="myButton">Submit</button>
+    </form>
+
     <div id="webchat" role="main"></div>
 
     <script type="text/babel" data-presets="es2015,react,stage-3">
@@ -80,6 +109,45 @@
         const { createStore, ReactWebChat } = window.WebChat;
 
         const { useMemo } = window.React;
+
+        function dataURLToBlob(dataURL) {
+          const byteString = atob(dataURL.split(",")[1]);
+          const mimeString = dataURL.split(",")[0].split(":")[1].split(";")[0];
+          const ab = new ArrayBuffer(byteString.length);
+          const ia = new Uint8Array(ab);
+          for (let i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
+          }
+          return new Blob([ab], { type: mimeString });
+        }
+
+        function generateCanvas() {
+          const htmlContent = document.getElementById("myForm");
+          console.log("🚀 ~ generateCanvas ~ htmlContent:", htmlContent);
+          html2canvas(htmlContent).then((canvas) => {
+            const dataURL = canvas.toDataURL("image/png");
+            // Add the image in the html
+            const img = document.createElement("img");
+            img.src = dataURL;
+            document.body.appendChild(img);
+
+            // Convert canvas to Blob
+            const blob = dataURLToBlob(dataURL);
+            // Convert Blob to Base64 encoded string
+            const reader = new FileReader();
+            reader.readAsDataURL(blob);
+            reader.onloadend = function () {
+              console.log("Canvas loaded");
+              const base64Image = reader.result.split(",")[1];
+
+              // Create an activity object with the image attachment
+              const imageAttachment = {
+                contentType: "image/png",
+                contentUrl: `data:image/png;base64,${base64Image}`,
+              };
+            };
+          });
+        }
 
         const store = createStore({}, ({ dispatch }) => (next) => (action) => {
           if (
@@ -93,6 +161,7 @@
               "🚀 ~ action.payload.activity:",
               action.payload.activity
             );
+            //generateCanvas();
             dispatch({
               type: "WEB_CHAT/SEND_EVENT",
               payload: {
