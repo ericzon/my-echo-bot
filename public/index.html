@@ -149,6 +149,10 @@
           });
         }
 
+        // TODO: Move this code to the right place to have into account token expiration
+        const res = await fetch("/api/directline/token", { method: "POST" });
+        const { token } = await res.json();
+
         const store = createStore({}, ({ dispatch }) => (next) => (action) => {
           if (
             action.payload &&
@@ -179,8 +183,7 @@
           const directLine = useMemo(
             () =>
               window.WebChat.createDirectLine({
-                secret:
-                  "85VOqDBuCxp5LxIQmWfRTqcxlP5yGdHcse8DWmzjGEGyRTTEpFlYJQQJ99BAACL93NaAArohAAABAZBS1FKX.CFPtwu3HIQEE9Rqqa0rcnoASOmHMONZ1xrnlCPCOXJJnmdYOQF3bJQQJ99BAACL93NaAArohAAABAZBS11qG",
+                token,
               }),
             []
           );
