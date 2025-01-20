@@ -21,7 +21,7 @@
       crossorigin="anonymous"
       src="https://unpkg.com/react-redux@7.1.0/dist/react-redux.min.js"
     ></script>
-    <script src="/path/to/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.3/html2canvas.min.js"></script>
     <!--
       This CDN points to the latest official release of Web Chat. If you need to test against Web Chat's latest bits, please refer to using Web Chat's latest bits:
       https://github.com/microsoft/BotFramework-WebChat#how-to-test-with-web-chats-latest-bits
@@ -110,45 +110,6 @@
 
         const { useMemo } = window.React;
 
-        function dataURLToBlob(dataURL) {
-          const byteString = atob(dataURL.split(",")[1]);
-          const mimeString = dataURL.split(",")[0].split(":")[1].split(";")[0];
-          const ab = new ArrayBuffer(byteString.length);
-          const ia = new Uint8Array(ab);
-          for (let i = 0; i < byteString.length; i++) {
-            ia[i] = byteString.charCodeAt(i);
-          }
-          return new Blob([ab], { type: mimeString });
-        }
-
-        function generateCanvas() {
-          const htmlContent = document.getElementById("myForm");
-          console.log("🚀 ~ generateCanvas ~ htmlContent:", htmlContent);
-          html2canvas(htmlContent).then((canvas) => {
-            const dataURL = canvas.toDataURL("image/png");
-            // Add the image in the html
-            const img = document.createElement("img");
-            img.src = dataURL;
-            document.body.appendChild(img);
-
-            // Convert canvas to Blob
-            const blob = dataURLToBlob(dataURL);
-            // Convert Blob to Base64 encoded string
-            const reader = new FileReader();
-            reader.readAsDataURL(blob);
-            reader.onloadend = function () {
-              console.log("Canvas loaded");
-              const base64Image = reader.result.split(",")[1];
-
-              // Create an activity object with the image attachment
-              const imageAttachment = {
-                contentType: "image/png",
-                contentUrl: `data:image/png;base64,${base64Image}`,
-              };
-            };
-          });
-        }
-
         // TODO: Move this code to the right place to have into account token expiration
         const res = await fetch("/api/directline/token", { method: "POST" });
         const { token } = await res.json();
@@ -161,18 +122,22 @@
             action.payload.activity.name === "makeScreenshot" &&
             action.type === "DIRECT_LINE/INCOMING_ACTIVITY"
           ) {
-            console.log(
-              "🚀 ~ action.payload.activity:",
-              action.payload.activity
-            );
-            //generateCanvas();
-            dispatch({
-              type: "WEB_CHAT/SEND_EVENT",
-              payload: {
-                name: "screenshotRequested",
-                type: "event",
-                value: { key: "I need a screenshot" },
-              },
+            //Generate screenshot and send it to the backend in the event
+            const htmlContent = document.getElementById("myForm");
+
+            html2canvas(htmlContent).then((canvas) => {
+              const base64Image = canvas.toDataURL("image/png");
+              dispatch({
+                type: "WEB_CHAT/SEND_EVENT",
+                payload: {
+                  name: "screenshotRequested",
+                  type: "event",
+                  value: {
+                    img: base64Image,
+                  },
+                },
+              });
+              return next(action);
             });
           } else {
             return next(action);

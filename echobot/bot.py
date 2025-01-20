@@ -26,5 +26,7 @@ class EchoBot(ActivityHandler):
         )
     
     async def on_event_activity(self, turn_context):
-        print(f"on_message_event called: {turn_context.activity.name}")
+        img_property = turn_context.activity.value.get("img", None)
+        print(f"on_message_event called img received: {img_property}")
+        # TODO: Call the API to get the description of the image
         return await super().on_event_activity(turn_context)
