@@ -30,7 +30,7 @@ class EchoBot(ActivityHandler):
     
     async def on_event_activity(self, turn_context):
         imgGenerated = turn_context.activity.value.get("img", None)
-        print(f"on_message_event called img received: {imgGenerated}")
+        #print(f"on_message_event called img received: {imgGenerated}")
     
         client = AzureOpenAI(
             api_key=os.environ.get("OPENAI_API_KEY"),  
