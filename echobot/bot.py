@@ -1,7 +1,8 @@
+import os
 from botbuilder.core import ActivityHandler, MessageFactory, TurnContext
 from botbuilder.schema import ActivityTypes, Activity
 from botbuilder.schema import ChannelAccount
-from openai import OpenAI
+from openai import AzureOpenAI
 
 
 
@@ -30,14 +31,17 @@ class EchoBot(ActivityHandler):
     async def on_event_activity(self, turn_context):
         imgGenerated = turn_context.activity.value.get("img", None)
         print(f"on_message_event called img received: {imgGenerated}")
-
-        # TODO: Call the corresponding API to get the description of the image. Below the code commented would be a first approach using gpt-4o-mini,
-        # but we need the api_key client to be able to do the call, we can use a OPENAI_API_KEY environment variable. 
-        """ client = OpenAI()
+    
+        client = AzureOpenAI(
+            api_key=os.environ.get("OPENAI_API_KEY"),  
+            api_version=os.environ.get("OPENAI_API_VERSION"),
+            base_url=f"{os.environ.get('OPENAI_API_BASE')}/openai/deployments/{os.environ.get('OPENAI_DEPLOYMENT_NAME')}"
+        )
 
         response = client.chat.completions.create(
-            model="gpt-4o-mini",
+            model=f"{os.environ.get('OPENAI_DEPLOYMENT_NAME')}",
             messages=[
+            { "role": "system", "content": "You are a helpful assistant." },
             {
                 "role": "user",
                 "content": [
@@ -51,7 +55,8 @@ class EchoBot(ActivityHandler):
                 ],
             }
             ],
-            max_tokens=300,
+            max_tokens=2000,
         )
-        print(response.choices[0]) """
+        print(response.choices[0])
+
         return await super().on_event_activity(turn_context)
