@@ -33,6 +33,7 @@ class EchoBot(ActivityHandler):
         imgGenerated = turn_context.activity.value.get("img", None)
 
         # TODO:  in utils.py there is a function to create the directory and save the image, but the import it is not working here. Needs investigation.
+        # Remove the code below and use the function from utils.py
         cwd = os.getcwd()
         directory = f"{cwd}/public/imagesSaved"
         os.makedirs(directory, exist_ok=True)

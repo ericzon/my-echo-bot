@@ -7,9 +7,9 @@ def create_directory(directory):
     except OSError as error:
         print(f"Error: {error}")
 
-def save_image(image_data, file_name):
+def save_image(image_data, folder_name, file_name):
     cwd = os.getcwd()    
-    directory = f"{cwd}/public/img"
+    directory = f"{cwd}/{folder_name}"
     create_directory(directory)
 
     imageCleaned = image_data.replace("data:image/png;base64,", "")
