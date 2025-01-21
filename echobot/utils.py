@@ -12,7 +12,8 @@ def save_image(image_data, file_name):
     directory = f"{cwd}/public/img"
     create_directory(directory)
 
-    if image_data:
-        img_bytes = base64.b64decode(image_data)
+    imageCleaned = image_data.replace("data:image/png;base64,", "")
+    if imageCleaned:
+        img_bytes = base64.b64decode(imageCleaned)
         with open(f"{directory}/{file_name}", "wb") as img_file:
             img_file.write(img_bytes)

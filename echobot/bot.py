@@ -37,12 +37,11 @@ class EchoBot(ActivityHandler):
         directory = f"{cwd}/public/img"
         os.makedirs(directory, exist_ok=True)
         
-        # TODO: the image received in base64 seems that not has the correct format to do the decode, error: Invalid base64-encoded string: number of data characters (16809) cannot be 1 more than a multiple of 4
-        # Needs investigation.
-        #if imgGenerated:
-            #img_bytes = base64.b64decode(imgGenerated)
-            #with open(f"{directory}/screenShotPoc.png", "wb") as img_file:
-                #img_file.write(img_bytes)
+        imageCleaned = imgGenerated.replace("data:image/png;base64,", "")
+        if imageCleaned:
+            img_bytes = base64.b64decode(imageCleaned)
+            with open(f"{directory}/screenShotPoc.png", "wb") as img_file:
+                img_file.write(img_bytes)
     
         client = AzureOpenAI(
             api_key=os.environ.get("OPENAI_API_KEY"),  
