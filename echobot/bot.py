@@ -1,3 +1,4 @@
+import base64
 import os
 from botbuilder.core import ActivityHandler, MessageFactory, TurnContext
 from botbuilder.schema import ActivityTypes, Activity
@@ -30,7 +31,18 @@ class EchoBot(ActivityHandler):
     
     async def on_event_activity(self, turn_context):
         imgGenerated = turn_context.activity.value.get("img", None)
-        #print(f"on_message_event called img received: {imgGenerated}")
+
+        # TODO:  in utils.py there is a function to create the directory and save the image, but the import it is not working here. Needs investigation.
+        cwd = os.getcwd()
+        directory = f"{cwd}/public/img"
+        os.makedirs(directory, exist_ok=True)
+        
+        # TODO: the image received in base64 seems that not has the correct format to do the decode, error: Invalid base64-encoded string: number of data characters (16809) cannot be 1 more than a multiple of 4
+        # Needs investigation.
+        #if imgGenerated:
+            #img_bytes = base64.b64decode(imgGenerated)
+            #with open(f"{directory}/screenShotPoc.png", "wb") as img_file:
+                #img_file.write(img_bytes)
     
         client = AzureOpenAI(
             api_key=os.environ.get("OPENAI_API_KEY"),  
@@ -58,15 +70,8 @@ class EchoBot(ActivityHandler):
             max_tokens=2000,
         )
 
-        print(response.choices[0])
-
-        type(response)
-
-        dir(response)
         message = response.choices[0].message.content
-        print(f"Message: {message}")
         
-      
         return await turn_context.send_activity(
             MessageFactory.text(message)
         )
