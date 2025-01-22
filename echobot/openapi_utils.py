@@ -1,5 +1,4 @@
 import os
-from openai import AzureOpenAI
 
 def describe_image(image_data, client):
     try:
