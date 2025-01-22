@@ -1,5 +1,6 @@
 import base64
 import os
+from .utils import save_image    
 from botbuilder.core import ActivityHandler, MessageFactory, TurnContext
 from botbuilder.schema import ActivityTypes, Activity
 from botbuilder.schema import ChannelAccount
@@ -32,17 +33,8 @@ class EchoBot(ActivityHandler):
     async def on_event_activity(self, turn_context):
         imgGenerated = turn_context.activity.value.get("img", None)
 
-        # TODO:  in utils.py there is a function to create the directory and save the image, but the import it is not working here. Needs investigation.
-        # Remove the code below and use the function from utils.py
-        cwd = os.getcwd()
-        directory = f"{cwd}/public/imagesSaved"
-        os.makedirs(directory, exist_ok=True)
-        
-        imageCleaned = imgGenerated.replace("data:image/png;base64,", "")
-        if imageCleaned:
-            img_bytes = base64.b64decode(imageCleaned)
-            with open(f"{directory}/screenShotPoc.png", "wb") as img_file:
-                img_file.write(img_bytes)
+        # Save the image to the public/generatedScreenshots folder
+        save_image(imgGenerated, "public/generatedScreenshots", "screenShotPoc.png")
     
         client = AzureOpenAI(
             api_key=os.environ.get("OPENAI_API_KEY"),  
