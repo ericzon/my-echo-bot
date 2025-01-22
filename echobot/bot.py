@@ -1,4 +1,3 @@
-import base64
 import os
 from .openapi_utils import describe_image
 from .utils import save_image    
