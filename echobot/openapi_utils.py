@@ -3,7 +3,7 @@ import os
 """Return the explanation from OpenAPI for the image provided.
 :param image_data: The image data to describe
 :client: The OpenAPI client
-:returns: The description of the image"""
+:returns: The explanation of the image"""
 
 def describe_image(image_data, client):
     try:
