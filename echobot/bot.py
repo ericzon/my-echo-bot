@@ -10,6 +10,13 @@ from openai import AzureOpenAI
 
 
 class EchoBot(ActivityHandler):
+    def __init__(self):
+        self.client = AzureOpenAI(
+            api_key=os.environ.get("OPENAI_API_KEY"),  
+            api_version=os.environ.get("OPENAI_API_VERSION"),
+            base_url=f"{os.environ.get('OPENAI_API_BASE')}/openai/deployments/{os.environ.get('OPENAI_DEPLOYMENT_NAME')}"
+        )
+
     async def on_members_added_activity(
         self, members_added: [ChannelAccount], turn_context: TurnContext
     ):
@@ -38,17 +45,12 @@ class EchoBot(ActivityHandler):
         save_image(imgGenerated, "public/generatedScreenshots", "screenShotPoc.png")
 
         # Use the openai API to describe the image
-        response = describe_image(imgGenerated)
+        response = describe_image(imgGenerated, self.client)
         print(f"result: {response}")
         message = response.choices[0].message.content
 
-        """client = AzureOpenAI(
-            api_key=os.environ.get("OPENAI_API_KEY"),  
-            api_version=os.environ.get("OPENAI_API_VERSION"),
-            base_url=f"{os.environ.get('OPENAI_API_BASE')}/openai/deployments/{os.environ.get('OPENAI_DEPLOYMENT_NAME')}"
-        )
-        try:
-            response =  client.chat.completions.create(
+        """  try:
+            response = self.client.chat.completions.create(
                 model=f"{os.environ.get('OPENAI_DEPLOYMENT_NAME')}",
                     messages=[
                     { "role": "system", "content": "You are a very patient childcare nurse." },
