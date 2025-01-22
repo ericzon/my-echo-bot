@@ -1,5 +1,6 @@
 import base64
 import os
+from .openapi_utils import describe_image
 from .utils import save_image    
 from botbuilder.core import ActivityHandler, MessageFactory, TurnContext
 from botbuilder.schema import ActivityTypes, Activity
@@ -35,34 +36,41 @@ class EchoBot(ActivityHandler):
 
         # Save the image to the public/generatedScreenshots folder
         save_image(imgGenerated, "public/generatedScreenshots", "screenShotPoc.png")
-    
-        client = AzureOpenAI(
+
+        # Use the openai API to describe the image
+        response = describe_image(imgGenerated)
+        print(f"result: {response}")
+        message = response.choices[0].message.content
+
+        """client = AzureOpenAI(
             api_key=os.environ.get("OPENAI_API_KEY"),  
             api_version=os.environ.get("OPENAI_API_VERSION"),
             base_url=f"{os.environ.get('OPENAI_API_BASE')}/openai/deployments/{os.environ.get('OPENAI_DEPLOYMENT_NAME')}"
         )
-
-        response = client.chat.completions.create(
-            model=f"{os.environ.get('OPENAI_DEPLOYMENT_NAME')}",
-            messages=[
-            { "role": "system", "content": "You are a very patient childcare nurse." },
-            {
-                "role": "user",
-                "content": [
-                {"type": "text", "text": "Explain to a child what's in this image. Avoid describing and listing individual elements."},
-                {
-                    "type": "image_url",
-                    "image_url": {
-                    "url": imgGenerated,
-                    },
-                },
-                ],
-            }
-            ],
-            max_tokens=2000,
-        )
-
-        message = response.choices[0].message.content
+        try:
+            response =  client.chat.completions.create(
+                model=f"{os.environ.get('OPENAI_DEPLOYMENT_NAME')}",
+                    messages=[
+                    { "role": "system", "content": "You are a very patient childcare nurse." },
+                    {
+                        "role": "user",
+                        "content": [
+                        {"type": "text", "text": "Explain to a child what's in this image. Avoid describing and listing individual elements."},
+                        {
+                            "type": "image_url",
+                            "image_url": {
+                            "url": imgGenerated,
+                            },
+                        },
+                        ],
+                    }
+                    ],
+                    max_tokens=2000,
+            )
+            message = response.choices[0].message.content
+            print(f"result: {response}")
+        except Exception as e:
+            print(f"error: {e}") """
         
         return await turn_context.send_activity(
             MessageFactory.text(message)
