@@ -2,3 +2,6 @@ __pycache__
 .env
 .venv
 public/generatedScreenshots
+
+notebooks/**/config.json
+notebooks/**/.ipynb_checkpoints
