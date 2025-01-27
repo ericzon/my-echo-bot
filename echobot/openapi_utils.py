@@ -1,8 +1,8 @@
 import os
-from langchain_core.tools import tool
+#from langchain_core.tools import tool
 
 
-@tool
+#@tool
 def describe_image(image_data, client):
     """Return the explanation from OpenAPI for the image provided.
         :param image_data: The image data to describe
@@ -17,7 +17,7 @@ def describe_image(image_data, client):
                 {
                     "role": "user",
                     "content": [
-                    {"type": "text", "text": "Explain to a child what's in this image. Avoid describing and listing individual elements."},
+                    {"type": "text", "text": "Explain to a child what's in this image. #Avoid describing and listing individual elements."},
                     {
                         "type": "image_url",
                         "image_url": {
