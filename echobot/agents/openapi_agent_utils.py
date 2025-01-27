@@ -1,6 +1,6 @@
 import os
 from .agent_utils import create_agent
-from .openapi_utils import describe_image
+from ..openapi_utils import describe_image
 from langchain_openai import ChatOpenAI
 
 

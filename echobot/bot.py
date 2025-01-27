@@ -1,6 +1,6 @@
 import os
 from .openapi_utils import describe_image
-from .openapi_agent_utils import agent_describe_image
+#from .agents.openapi_agent_utils import agent_describe_image
 from .utils import save_image    
 from botbuilder.core import ActivityHandler, MessageFactory, TurnContext
 from botbuilder.schema import ActivityTypes, Activity
