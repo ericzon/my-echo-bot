@@ -47,31 +47,6 @@ class EchoBot(ActivityHandler):
         response = describe_image(imgGenerated, self.client)
         print(f"result: {response}")
         message = response.choices[0].message.content
-
-        """  try:
-            response = self.client.chat.completions.create(
-                model=f"{os.environ.get('OPENAI_DEPLOYMENT_NAME')}",
-                    messages=[
-                    { "role": "system", "content": "You are a very patient childcare nurse." },
-                    {
-                        "role": "user",
-                        "content": [
-                        {"type": "text", "text": "Explain to a child what's in this image. Avoid describing and listing individual elements."},
-                        {
-                            "type": "image_url",
-                            "image_url": {
-                            "url": imgGenerated,
-                            },
-                        },
-                        ],
-                    }
-                    ],
-                    max_tokens=2000,
-            )
-            message = response.choices[0].message.content
-            print(f"result: {response}")
-        except Exception as e:
-            print(f"error: {e}") """
         
         return await turn_context.send_activity(
             MessageFactory.text(message)
