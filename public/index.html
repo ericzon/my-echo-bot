@@ -42,32 +42,6 @@
 
       #webchat {
         height: 50%;
-        width: 50%;
-      }
-
-      .botActivityDecorator {
-        min-height: 60px;
-        position: relative;
-      }
-
-      .botActivityDecorator .botActivityDecorator__content {
-        padding-left: 40px;
-      }
-
-      .botActivityDecorator .botActivityDecorator__buttonBar {
-        list-style-type: none;
-        margin: 0 0 0 10px;
-        padding: 0;
-        position: absolute;
-      }
-
-      .botActivityDecorator
-        .botActivityDecorator__buttonBar
-        .botActivityDecorator__button {
-        background: White;
-        border: solid 1px #e6e6e6;
-        margin-bottom: 2px;
-        padding: 2px 5px 5px;
       }
 
       .formClass {
@@ -144,6 +118,13 @@
           }
         });
 
+        const styleOptions = {
+          primaryFont: "'Open Sans', sans-serif;font-size: 1.15em",
+          backgroundColor: "#D4E1F5BF",
+          bubbleBackground: "transparent",
+          bubbleFromUserBackground: "transparent",
+        };
+
         const App = () => {
           const directLine = useMemo(
             () =>
@@ -153,7 +134,13 @@
             []
           );
 
-          return <ReactWebChat directLine={directLine} store={store} />;
+          return (
+            <ReactWebChat
+              directLine={directLine}
+              store={store}
+              styleOptions={styleOptions}
+            />
+          );
         };
 
         window.ReactDOM.render(<App />, document.getElementById("webchat"));
