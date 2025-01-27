@@ -23,8 +23,7 @@ def describe_image(image_data, client):
                     },
                     ],
                 }
-                ],
-                max_tokens=2000,
+                ]
         )
         return result
     except Exception as e:
