@@ -1,10 +1,12 @@
 import os
 from .openapi_utils import describe_image
+from .openapi_agent_utils import agent_describe_image
 from .utils import save_image    
 from botbuilder.core import ActivityHandler, MessageFactory, TurnContext
 from botbuilder.schema import ActivityTypes, Activity
 from botbuilder.schema import ChannelAccount
 from openai import AzureOpenAI
+
 
 
 
@@ -45,8 +47,12 @@ class EchoBot(ActivityHandler):
 
         # Use the openai API to describe the image
         response = describe_image(imgGenerated, self.client)
-        print(f"result: {response}")
         message = response.choices[0].message.content
+
+        # Use the openai agent to describe the image
+        # TODO: It is not working error 'AttributeError: 'AzureOpenAI' object has no attribute 'parent_run_id' needs to be investigated
+        #agent_response= agent_describe_image(imgGenerated, self.client)
+        #print(f"agent result: {agent_response.choices[0].message.content}")
         
         return await turn_context.send_activity(
             MessageFactory.text(message)

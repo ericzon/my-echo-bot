@@ -1,11 +1,14 @@
 import os
+from langchain_core.tools import tool
 
-"""Return the explanation from OpenAPI for the image provided.
-:param image_data: The image data to describe
-:client: The OpenAPI client
-:returns: The explanation of the image"""
 
+@tool
 def describe_image(image_data, client):
+    """Return the explanation from OpenAPI for the image provided.
+        :param image_data: The image data to describe
+        :client: The OpenAPI client
+        :returns: The explanation of the image"""
+
     try:
         result =  client.chat.completions.create(
             model=f"{os.environ.get('OPENAI_DEPLOYMENT_NAME')}",
