@@ -34,3 +34,25 @@ SPEECH_ENDPOINT=
 Once you have started the application, it will expose the chatbot client in http://localhost:<PORT>/ or http://localhost:<PORT>/index_speech.html
 
 It includes 2 versions of client, the basic one and another version using Azure Speech for STT (Speech to text).
+
+
+## Export .ENV to Azure WebAPP
+
+### Generate the current settings.json
+az webapp config appsettings list --name acc-poc-web-app-svc-test-01 --resource-group z-ago-airesearchsb01-ew-01 > settings.json
+
+### Run the script
+/bin/bash export_settings_json.sh  
+
+### Set the new environment variables to WebAPP
+From local, run this command:
+```
+az webapp config appsettings set --name acc-poc-web-app-svc-test-01 --resource-group z-ago-airesearchsb01-ew-01 --settings @settings.json
+```
+
+## Deploy
+
+From local, run this command:
+```
+az webapp up --sku B1 --logs  --resource-group z-ago-airesearchsb01-ew-01 --plan ASP-acc-poc-web-app-svc-test-01-8e42 --location westeurope --runtime PYTHON:3.12 --name acc-poc-web-app-svc-test-01 --verbose
+```
