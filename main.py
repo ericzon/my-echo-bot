@@ -119,7 +119,6 @@ async def messages(request: Request):
     response = await bot_adapter.process_activity(activity, auth_header, echo_bot.on_turn)
     return response
 
-
 @app.get("/")
 async def read_index():
     return FileResponse("public/index.html")
@@ -128,6 +127,6 @@ app.mount("/", StaticFiles(directory="public"), name="public")
 
 if __name__ == "__main__":
     try:
-        uvicorn.run("main:app", host="localhost", port=os.environ.get("PORT"), reload=True, log_level="debug")
+        uvicorn.run("main:app", host="localhost", port=int(os.environ.get("PORT")), reload=True, log_level="debug")
     except Exception as error:
         raise error
