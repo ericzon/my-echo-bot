@@ -40,8 +40,29 @@
         margin: 0;
       }
 
+      #chatIcon {
+        position: fixed;
+        right: 0;
+        bottom: 0;
+        width: 8%;
+      }
+
       #webchat {
-        height: 50%;
+        position: fixed;
+        right: 10px;
+        bottom: 10px;
+        width: 41vw;
+        height: 90vh;
+        max-width: 594px;
+        max-height: 414px;
+        border: 1px solid black;
+        border-radius: 5px;
+        font-family: "Open Sans", sans-serif;
+        font-size: 1em;
+      }
+
+      .webchat__send-box.webchat--css.webchat__send-box__main {
+        background-color: yellow;
       }
 
       .formClass {
@@ -73,15 +94,15 @@
       <br />
       <button type="submit" class="myButton">Submit</button>
     </form>
+    <img src="img/chat_icon.png" alt="Chat Icon" id="chatIcon" />
 
-    <div id="webchat" role="main"></div>
+    <div id="webchat" role="main" style="display: none"></div>
 
     <script type="text/babel" data-presets="es2015,react,stage-3">
       (async function () {
         "use strict";
 
         const { createStore, ReactWebChat } = window.WebChat;
-
         const { useMemo } = window.React;
 
         // TODO: Move this code to the right place to have into account token expiration
@@ -119,7 +140,6 @@
         });
 
         const styleOptions = {
-          primaryFont: "'Open Sans', sans-serif;font-size: 1.15em",
           backgroundColor: "#D4E1F5BF",
           bubbleBackground: "transparent",
           bubbleFromUserBackground: "transparent",
@@ -146,6 +166,25 @@
         window.ReactDOM.render(<App />, document.getElementById("webchat"));
 
         document.querySelector("#webchat > *").focus();
+
+        const chatIcon = document.getElementById("chatIcon");
+        const webchat = document.getElementById("webchat");
+
+        // add a click event listener to the document
+        document.addEventListener("click", (e) => {
+          // check if the click event target is not the chat icon or the webchat div or any of its descendants
+          if (e.target !== chatIcon && !webchat.contains(e.target)) {
+            // if so, hide the webchat div
+            webchat.style.display = "none";
+            chatIcon.style.display = "inline-block";
+          }
+        });
+
+        // add a click event listener to the chat icon image to show the webchat
+        chatIcon.addEventListener("click", () => {
+          webchat.style.display = "block";
+          chatIcon.style.display = "none";
+        });
       })().catch((err) => console.error(err));
     </script>
   </body>
