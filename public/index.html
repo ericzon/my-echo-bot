@@ -134,7 +134,7 @@
    <div>
   
 
-    <script type="text/babel" data-presets="es2015,react,stage-3">
+  <script type="text/babel" data-presets="es2015,react,stage-3">
       
     async function initializeChatbot() {
       const { createStore, ReactWebChat } = window.WebChat;
@@ -208,62 +208,62 @@
       window.ReactDOM.render(<App />, document.getElementById("webchat"));
 
       document.querySelector("#webchat > *").focus();
-  }
+   }
 
-  (async function () {
-    "use strict";
+    (async function () {
+      "use strict";
 
-    await initializeChatbot();
+      await initializeChatbot();
 
-    const chatIcon = document.getElementById("chatIcon");
-    const webchat = document.getElementById("custom-chat-bot");
-    const buttonExit = document.getElementById("buttonExit");
+      const chatIcon = document.getElementById("chatIcon");
+      const webchat = document.getElementById("custom-chat-bot");
+      const buttonExit = document.getElementById("buttonExit");
 
-    // add a click event listener to the document
-    document.addEventListener("click", (e) => {
-      // check if the click event target is not the chat icon or the webchat div or any of its descendants
-      if (e.target !== chatIcon && !webchat.contains(e.target)) {
-        // if so, hide the webchat div
-        webchat.style.display = "none";
-        chatIcon.style.display = "inline-block";
-      }
-    });
+      // add a click event listener to the document
+      document.addEventListener("click", (e) => {
+        // check if the click event target is not the chat icon or the webchat div or any of its descendants
+        if (e.target !== chatIcon && !webchat.contains(e.target)) {
+          // if so, hide the webchat div
+          webchat.style.display = "none";
+          chatIcon.style.display = "inline-block";
+        }
+      });
 
-    // add a click event listener to the chat icon image to show the webchat
-    chatIcon.addEventListener("click", () => {
-      webchat.style.display = "block";
-      chatIcon.style.display = "none";
-    });
+      // add a click event listener to the chat icon image to show the webchat
+      chatIcon.addEventListener("click", () => {
+        webchat.style.display = "block";
+        chatIcon.style.display = "none";
+      });
 
-    replaceSendIcon();
+      replaceSendIcon();
 
-  })().catch((err) => console.error(err));
+    })().catch((err) => console.error(err));
 
-  function replaceSendIcon(){
-    // Replace send image
-    // select the SVG element
-    const svgElement = document.querySelector(".webchat__send-icon");
+    function replaceSendIcon(){
+      // Replace send image
+      // select the SVG element
+      const svgElement = document.querySelector(".webchat__send-icon");
 
-    // create a new image element
-    const imgElement = document.createElement("img");
+      // create a new image element
+      const imgElement = document.createElement("img");
 
-    // set the attributes of the new image element
-    imgElement.src = "img/dial.png"; // replace with the path to your new image
-    imgElement.alt = "Send Icon";
-    imgElement.height = 28;
-    imgElement.width = 28;
+      // set the attributes of the new image element
+      imgElement.src = "img/dial.png"; // replace with the path to your new image
+      imgElement.alt = "Send Icon";
+      imgElement.height = 28;
+      imgElement.width = 28;
 
-    // replace the SVG element with the new image element
-    svgElement.parentNode.replaceChild(imgElement, svgElement);
-  }
+      // replace the SVG element with the new image element
+      svgElement.parentNode.replaceChild(imgElement, svgElement);
+    }
 
-  async function handleExit() {
-    // Reset the token and reinitialize the chatbot
-    await initializeChatbot('exit');
-    document.getElementById("chatIcon").style.display="block";
-    document.getElementById("custom-chat-bot").style.display = "none";
-    replaceSendIcon();
-  }
-    </script>
-  </body>
+    async function handleExit() {
+      // Reset the token and reinitialize the chatbot
+      await initializeChatbot('exit');
+      document.getElementById("chatIcon").style.display="block";
+      document.getElementById("custom-chat-bot").style.display = "none";
+      replaceSendIcon();
+    }
+  </script>
+ </body>
 </html>
