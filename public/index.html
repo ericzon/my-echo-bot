@@ -140,7 +140,6 @@
 
         const { createStore, ReactWebChat } = window.WebChat;
         const { useMemo } = window.React;
-
         // TODO: Move this code to the right place to have into account token expiration
         const res = await fetch("/api/directline/token", { method: "POST" });
         const { token } = await res.json();
@@ -191,10 +190,12 @@
               }),
             []
           );
+          const locale = navigator.language || "en-US";
 
           return (
             <ReactWebChat
               directLine={directLine}
+              locale={locale}
               store={store}
               styleOptions={styleOptions}
             />
