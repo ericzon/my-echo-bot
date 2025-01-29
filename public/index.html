@@ -47,22 +47,46 @@
         width: 8%;
       }
 
-      #webchat {
+      #custom-chat-bot{
         position: fixed;
         right: 10px;
         bottom: 10px;
-        width: 41vw;
-        height: 90vh;
-        max-width: 594px;
-        max-height: 414px;
-        border: 1px solid black;
+        border: 1px solid #00008F;
         border-radius: 5px;
-        font-family: "Open Sans", sans-serif;
-        font-size: 1em;
       }
 
-      .webchat__send-box.webchat--css.webchat__send-box__main {
-        background-color: yellow;
+      #webchat {
+        width: 28vw;
+        height: 12vw;
+      }
+
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        background-color: #f8f9fa; /* adjust as needed */
+      }
+
+      .logo {
+        height: 40px; /* adjust as needed */
+      }
+
+      .button-exit,.button-help {
+        margin-left: 10px; /* adjust as needed */
+        color:  #00008F;
+        background-color: white;
+        border: 2.5px solid;
+        border-color: #00008F;
+        border-radius: 5px;
+        width: 84px;
+      }
+
+      .button-help {
+        color: white;
+        background-color: #00008F;
+        width: 117px;
+
       }
 
       .formClass {
@@ -96,7 +120,19 @@
     </form>
     <img src="img/chat_icon.png" alt="Chat Icon" id="chatIcon" />
 
-    <div id="webchat" role="main" style="display: none"></div>
+    <div id="custom-chat-bot" style="display: none">
+      <div class="header">
+        <div class="logo-container">
+          <img src="img/icon-chatbot-96.png" alt="Company Logo" class="logo">
+        </div>
+        <div class="button-container">
+          <button class="button-exit">Exit</button>
+          <button class="button-help">Need help?</button>
+        </div>
+      </div>
+      <div id="webchat" role="main">
+   <div>
+  
 
     <script type="text/babel" data-presets="es2015,react,stage-3">
       (async function () {
@@ -140,9 +176,11 @@
         });
 
         const styleOptions = {
+          primaryFont: "'Open Sans', sans-serif;font-size: 1em",
           backgroundColor: "#D4E1F5BF",
           bubbleBackground: "transparent",
           bubbleFromUserBackground: "transparent",
+          hideUploadButton: true
         };
 
         const App = () => {
@@ -168,7 +206,7 @@
         document.querySelector("#webchat > *").focus();
 
         const chatIcon = document.getElementById("chatIcon");
-        const webchat = document.getElementById("webchat");
+        const webchat = document.getElementById("custom-chat-bot");
 
         // add a click event listener to the document
         document.addEventListener("click", (e) => {
@@ -185,6 +223,22 @@
           webchat.style.display = "block";
           chatIcon.style.display = "none";
         });
+
+        // Replace send image
+        // select the SVG element
+        const svgElement = document.querySelector(".webchat__send-icon");
+
+        // create a new image element
+        const imgElement = document.createElement("img");
+
+        // set the attributes of the new image element
+        imgElement.src = "img/dial.png"; // replace with the path to your new image
+        imgElement.alt = "Send Icon";
+        imgElement.height = 28;
+        imgElement.width = 28;
+
+        // replace the SVG element with the new image element
+        svgElement.parentNode.replaceChild(imgElement, svgElement);
       })().catch((err) => console.error(err));
     </script>
   </body>
