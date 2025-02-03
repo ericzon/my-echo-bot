@@ -1,5 +1,4 @@
-Echo-bot
-========
+# Echo-bot
 
 My aim with this project is just to give a simple base to help tackling the real problem. It's based in the example from Microsoft bot framework.
 
@@ -13,14 +12,15 @@ My aim with this project is just to give a simple base to help tackling the real
 ```
 poetry install
 ```
-5. create a .env file in the root project with the content in the section env variables below
 
+5. create a .env file in the root project with the content in the section env variables below
 
 ## Setup
 
 In this case I'm using python 3.12.3. I suggest to use poetry or similar but is up to you. Main dependencies are reflected in pyproject.toml.
 
 Once you've installed all the dependencies, you can start the application with:
+
 ```
 poetry run python main.py
 ```
@@ -29,6 +29,7 @@ poetry run python main.py
 
 ```
 PORT=3000
+DOMAIN=http://localhost
 
 # Bot: Fill these values from Azure Bot settings
 BOT_ID=
