@@ -13,7 +13,7 @@ async function initializeChatbot() {
       action.payload.activity.name === "makeScreenshot" &&
       action.type === "DIRECT_LINE/INCOMING_ACTIVITY"
     ) {
-      const htmlContent = document.getElementById("myForm");
+      const htmlContent = document.body;
 
       html2canvas(htmlContent).then((canvas) => {
         const base64Image = canvas.toDataURL("image/png");
