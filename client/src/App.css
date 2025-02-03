@@ -1,0 +1,9 @@
+.App {
+  text-align: center;
+}
+
+.app-header {
+  background-color: #2a63d5;
+  height: 5vw;
+  min-height: 10vh;
+}
