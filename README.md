@@ -43,6 +43,15 @@ SPEECH_ENDPOINT=
 
 ```
 
+## Front end
+
+The front end code is placed in folder client.
+To install the dependencies go to the folder `client` and execute `npm install`
+
+Once the backend is started the frontend is started, as well, but the front can be executed independently in port 3001. To do so, go to the folder `client` and execute `npm start`.
+
+To build the front, go to the folder client and execute `npm run build`, this will create inside `client` folder a `build` folder with all the generated code.
+
 ## Public folder
 
 Once you have started the application, it will expose the chatbot client in http://localhost:<PORT>/ or http://localhost:<PORT>/index_speech.html
