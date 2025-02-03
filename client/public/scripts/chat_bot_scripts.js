@@ -2,7 +2,10 @@ async function initializeChatbot() {
   const { createStore, ReactWebChat } = window.WebChat;
   const { useMemo } = window.React;
 
-  const res = await fetch("http://localhost:3000/api/directline/token", {
+  const resConfig = await fetch("/api/getConfig", { method: "GET" });
+  const config = await resConfig.json();
+  const { domain, port } = config;
+  const res = await fetch(`${domain}:${port}/api/directline/token`, {
     method: "POST",
   });
   const { token } = await res.json();
