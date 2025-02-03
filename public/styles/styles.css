@@ -30,7 +30,7 @@ body {
 }
 
 #webchat {
-  height: 81%;
+  height: 100%;
 }
 
 @media (min-width: 769px) {
@@ -41,7 +41,7 @@ body {
     border: 1px solid #00008f;
     border-radius: 5px;
     width: 30%;
-    height: 50%;
+    height: 59%;
     top: auto; /* Override top position */
     left: auto; /* Override left position */
   }
