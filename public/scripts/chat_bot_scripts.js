@@ -1,6 +1,6 @@
 async function initializeChatbot() {
   const { createStore, ReactWebChat } = window.WebChat;
-  const { useMemo, useState } = window.React;
+  const { useMemo } = window.React;
 
   const res = await fetch("/api/directline/token", { method: "POST" });
   const { token } = await res.json();
@@ -79,7 +79,6 @@ async function initializeChatbot() {
 
   const chatIcon = document.getElementById("chatIcon");
   const webchat = document.getElementById("custom-chat-bot");
-  const buttonExit = document.getElementById("buttonExit");
 
   // add a click event listener to the document
   document.addEventListener("click", (e) => {
