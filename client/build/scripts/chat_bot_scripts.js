@@ -1,8 +1,13 @@
 async function initializeChatbot() {
   const { createStore, ReactWebChat } = window.WebChat;
-  const { useMemo, useState } = window.React;
+  const { useMemo } = window.React;
 
-  const res = await fetch("/api/directline/token", { method: "POST" });
+  const resConfig = await fetch("/api/getConfig", { method: "GET" });
+  const config = await resConfig.json();
+  const { domain, port } = config;
+  const res = await fetch(`${domain}:${port}/api/directline/token`, {
+    method: "POST",
+  });
   const { token } = await res.json();
 
   const store = createStore({}, ({ dispatch }) => (next) => (action) => {
@@ -13,7 +18,7 @@ async function initializeChatbot() {
       action.payload.activity.name === "makeScreenshot" &&
       action.type === "DIRECT_LINE/INCOMING_ACTIVITY"
     ) {
-      const htmlContent = document.getElementById("myForm");
+      const htmlContent = document.getElementById("root");
 
       html2canvas(htmlContent).then((canvas) => {
         const base64Image = canvas.toDataURL("image/png");
@@ -73,13 +78,10 @@ async function initializeChatbot() {
 }
 
 (async function () {
-  "use strict";
-
   await initializeChatbot();
 
   const chatIcon = document.getElementById("chatIcon");
   const webchat = document.getElementById("custom-chat-bot");
-  const buttonExit = document.getElementById("buttonExit");
 
   // add a click event listener to the document
   document.addEventListener("click", (e) => {

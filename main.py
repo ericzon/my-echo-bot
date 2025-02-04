@@ -120,11 +120,19 @@ async def messages(request: Request):
     return response
 
 
+@app.get("/api/getConfig")
+async def get_config():
+    config = {
+        "domain": os.environ.get("DOMAIN"),
+        "port": os.environ.get("PORT"),
+    }
+    return config
+
 @app.get("/")
 async def read_index():
-    return FileResponse("public/index.html")
+    return FileResponse("client/build/index.html")
 
-app.mount("/", StaticFiles(directory="public"), name="public")
+app.mount("/", StaticFiles(directory="client/build"), name="public")
 
 if __name__ == "__main__":
     try:
